@@ -493,7 +493,6 @@ function mostrarInicio(){const pi=$('si');pi.style.display='';pi.style.opacity='
 /* ═══ MODO CAOS ═══ */
 function toggleCaos(){
   MODO_CAOS=!MODO_CAOS;
-  if(MODO_CAOS)else
   aplicarVisCaos();
 }
 function aplicarVisCaos(){
@@ -1581,14 +1580,4 @@ function buildTicker(){
 $('si').style.display='none';
 buildPaises();
 detectarSave();
-/* ═══ CONTROLES DE AUDIO ═══ */
-function toggleMusica(){
-  const on=
-  const btn=$('btn-mus');
-  if(btn){btn.textContent=on?'🎵':'🔇';btn.classList.toggle('aud-off',!on)}
-}
-function toggleSfx(){
-  const on=
-  const btn=$('btn-sfx');
-  if(btn){btn.textContent=on?'🔊':'🔈';btn.classList.toggle('aud-off',!on)}
-}
+
