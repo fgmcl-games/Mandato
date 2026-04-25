@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MANDATO — Simulador Presidencial</title>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="estilo.css">
+
+</head>
+<body>
+
+<!-- INICIO -->
+<div id="si">
+  <div class="ii">
+    <div class="ihero">
+      <div class="ipre">Simulador Presidencial</div>
+      <div class="ilogo"><h1>MANDATO</h1></div>
+      <p class="itag">Cada decisión define tu legado — ¿Cuántos días sobrevivirás?</p>
+      <div class="fgmcl-brand">FGMCL GAMES</div>
+      <div class="ideco">
+        <div class="idi"><span class="idin">6</span><span class="idil">Países</span></div>
+        <div class="isep"></div>
+        <div class="idi"><span class="idin">50+</span><span class="idil">Eventos</span></div>
+        <div class="isep"></div>
+        <div class="idi"><span class="idin">4</span><span class="idil">Perfiles</span></div>
+        <div class="isep"></div>
+        <div class="idi"><span class="idin">16</span><span class="idil">Logros</span></div>
+      </div>
+    </div>
+    <div class="imw">
+      <div id="mp">
+        <button class="bm bpri" onclick="mostrarSel()">✦ Nueva Partida</button>
+        <button class="bm bsec" id="bcont" onclick="ejecutarCarga()" disabled>▶ Continuar Partida</button>
+        <button class="bm bgho bcaos" id="btn-caos" onclick="toggleCaos()">💀 Modo Caos</button>
+        <a class="bm bgho bmail" href="mailto:fgmclgames@gmail.com?subject=Sugerencia%20para%20MANDATO">✉ Enviar Sugerencia</a>
+        <div id="msp"><div class="mspf" id="mspf">🌍</div><div class="mspi"><div class="mspn" id="mspn">—</div><div class="mspd">Día <span id="mspd">—</span></div></div></div>
+      </div>
+    </div>
+    <div id="selp">
+      <div class="selhd">
+        <button class="selb" onclick="ocultarSel()">← Volver</button>
+        <span class="selt">Elige tu país</span>
+        <div style="width:80px"></div>
+      </div>
+      <div class="gp" id="gp"></div>
+    </div>
+  </div>
+</div>
+
+<!-- CARGA -->
+<div id="scl">
+  <div class="sllogo">MANDATO</div>
+  <div class="svc">
+    <div class="sctag">Partida guardada detectada</div>
+    <div class="scpr"><div class="scpf" id="scpf">🌍</div><div><div class="scpn" id="scpn">—</div><div class="scpd">Día <span id="scpd">—</span> en el poder</div></div></div>
+    <div class="scfase" id="scfase">Fase: —</div>
+    <div class="scpers" id="scpers"></div>
+    <div class="scsg" id="scsg"></div>
+    <div class="sclo" id="sclo"></div>
+    <div class="scts" id="scts">Guardado el —</div>
+    <div class="scbs">
+      <button class="bcont" onclick="ejecutarCarga()">▶ Continuar Partida</button>
+      <button class="bns" onclick="descartarYNueva()">✦ Nueva Partida</button>
+    </div>
+  </div>
+</div>
+
+<!-- JUEGO -->
+<div id="sg">
+  <aside id="sidebar">
+    <div class="sbhd">
+      <div class="sbfl" id="sbfl">🌍</div>
+      <div class="sbbr">Mandato</div>
+      <div class="sbco" id="sbco">—</div>
+      <div class="sbph" id="sbph">Fase: Inicio</div>
+    </div>
+    <div id="traits-wrap"></div>
+    <div class="stw" id="stw"></div>
+    <div class="pw" id="pw">
+      <div class="pwl">Perfil político</div>
+      <div class="pwhd"><div class="pwic" id="pwic">🎭</div><div class="pwnm" id="pwnm">Neutral</div></div>
+      <div class="pwbars" id="pwbars"></div>
+    </div>
+    <div id="caos-ind">MODO CAOS ACTIVO</div>    <button class="bsv" onclick="guardar()">💾 Guardar Partida</button>
+    <div class="low" id="low"><div class="lowt">Logros</div></div>
+  </aside>
+  <div id="ticker"><div class="ticker-track" id="ticker-track"></div></div>
+  <header id="ghd">
+    <div class="db"><div class="dl">Día en el poder</div><div class="dn" id="dn">1</div></div>
+    <div id="cb">⏳ <span id="ct">0 pendientes</span></div>
+    <div id="logev"></div>
+  </header>
+  <main id="gm">
+    <div id="ce">
+      <div class="etr"><span class="ed" id="ed"></span><span id="et">Evento</span></div>
+      <div class="eic" id="eic">⚡</div>
+      <p class="etx" id="etx">Cargando…</p>
+      <div id="asesor-wrap"></div>
+      <div class="ops" id="ops"></div>
+    </div>
+  </main>
+  <footer id="gft"><span class="fgmcl-footer">FGMCL GAMES</span><button class="bre" onclick="abrirMR()">↩ Reiniciar</button></footer>
+</div>
+
+<!-- MODAL ELECCIONES -->
+<div id="modal-elec">
+  <div class="ec">
+    <div class="ec-head">
+      <span class="ec-flag" id="ec-flag">🌍</span>
+      <div class="ec-pretitle">Elecciones Presidenciales</div>
+      <div class="ec-title" id="ec-title">Jornada Electoral</div>
+      <div class="ec-dia" id="ec-dia">Día —</div>
+    </div>
+    <div class="ec-body" id="ec-body"></div>
+  </div>
+</div>
+
+<!-- MODAL REINICIO -->
+<div id="mr">
+  <div class="mrc">
+    <div class="mrco">⚠️</div>
+    <div class="mrt">¿Abandonar partida?</div>
+    <div class="mrd">Se borrará el guardado y volverás al menú. No se puede deshacer.</div>
+    <div class="mrb">
+      <button class="mrcan" onclick="cerrarMR()">Cancelar</button>
+      <button class="mrcon" onclick="ejecutarReinicio()">Reiniciar</button>
+    </div>
+  </div>
+</div>
+
+<!-- GAME OVER -->
+<div id="sgo">
+  <div class="goc">
+    <div class="goh">
+      <span class="goic" id="goic">💀</span>
+      <div class="gotit" id="gotit">MANDATO TERMINADO</div>
+      <div class="gosub">Tu mandato ha llegado a su fin</div>
+    </div>
+    <div class="gob">
+      <div class="gopr">
+        <div class="gopi"><div class="gopf" id="gopf">🌍</div><div><div class="gopn" id="gopn">—</div><div class="gopp" id="gopp">—</div></div></div>
+        <div class="godb"><div class="godn" id="godn">0</div><div class="godl">días en el poder</div></div>
+      </div>
+      <div class="gosp"></div>
+      <div><div class="gocl">Motivo de derrota</div><div class="goct" id="goct">—</div></div>
+      <div class="gosp"></div>
+      <div><div class="gosl">Estadísticas finales</div><div class="gosg" id="gosg"></div></div>
+      <div><div class="goll">Logros obtenidos</div><div class="gols" id="gols"></div></div>
+      <div class="gobs">
+        <button class="brt" onclick="reintentar()">↺ Reintentar</button>
+        <button class="bgh" onclick="irInicio()">← Inicio</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CRISIS FLASH -->
+<div id="crisis-flash"></div>
+
+<!-- NOTIFS -->
+<div id="ns"></div>
+
+<script src="scripts.js"></script>
+</body>
+</html>
+
