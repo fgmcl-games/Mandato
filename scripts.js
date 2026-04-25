@@ -600,9 +600,6 @@ function aplicarEfx(imp, mult=1, evId=''){
   Object.entries(fxMod).forEach(([k,v])=>{
     if(G[k]===undefined)return;const d=Math.round(v*mult);G[k]=Math.max(0,Math.min(100,G[k]+d));ap[k]=d;
   });
-  const sumPos=Object.values(ap).filter(v=>v>0).reduce((a,b)=>a+b,0);
-  const sumNeg=Object.values(ap).filter(v=>v<0).reduce((a,b)=>a+b,0);
-  if(sumPos>sumNeg*-1)else if(sumNeg<-2)
   mostrarFlechas(ap);actualizarStats();
 }
 function calcMult(){const d=G.dia;let m;if(d<=10)m=.65;else if(d<=20)m=.85;else if(d<=35)m=1;else if(d<=55)m=1.2;else m=1.4;return MODO_CAOS?m*1.65:m}
@@ -1584,3 +1581,14 @@ function buildTicker(){
 $('si').style.display='none';
 buildPaises();
 detectarSave();
+/* ═══ CONTROLES DE AUDIO ═══ */
+function toggleMusica(){
+  const on=
+  const btn=$('btn-mus');
+  if(btn){btn.textContent=on?'🎵':'🔇';btn.classList.toggle('aud-off',!on)}
+}
+function toggleSfx(){
+  const on=
+  const btn=$('btn-sfx');
+  if(btn){btn.textContent=on?'🔊':'🔈';btn.classList.toggle('aud-off',!on)}
+}
