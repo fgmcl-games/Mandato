@@ -1,6 +1,3 @@
-/* ════════════════════════════════════════
-   MANDATO — Motor completo
-════════════════════════════════════════ */
 const PAISES={
   venezuela:{n:'Venezuela',f:'🇻🇪',dfc:'dfh',dft:'Difícil',
     s:{popularidad:35,economia:22,estabilidad:32,relaciones:28,corrupcion:72},
@@ -22,9 +19,7 @@ const PAISES={
     tr:['democracia_consolidada','turismo_dep','tension_regional']}
 };
 
-// Catálogo de traits: modificadores que afectan efectos de decisiones
 const TRAITS = {
-  // ─ Venezuela ─
   eco_fragil:{
     n:'Economía frágil', i:'📉', col:'#ff5533',
     desc:'Las pérdidas económicas se amplifican. Recuperarse es más costoso.',
@@ -40,7 +35,6 @@ const TRAITS = {
     desc:'Reducir la corrupción cuesta el doble. Aumentarla es gratis.',
     mod:(fx)=>{ if(fx.corrupcion>0) fx.corrupcion=Math.round(fx.corrupcion*1.3); if(fx.corrupcion<0) fx.corrupcion=Math.round(fx.corrupcion*0.6); return fx; }
   },
-  // ─ Argentina ─
   ciclo_politico:{
     n:'Ciclo político volátil', i:'🎢', col:'#ffaa00',
     desc:'La popularidad sube y baja con el doble de intensidad.',
@@ -56,7 +50,6 @@ const TRAITS = {
     desc:'Las protestas generan más presión pero también más legitimidad si dialogas.',
     mod:(fx,evId)=>{ if(['protestas','prot_fmi','rebelion'].includes(evId)){ if(fx.popularidad>0) fx.popularidad=Math.round(fx.popularidad*1.3); if(fx.estabilidad<0) fx.estabilidad=Math.round(fx.estabilidad*1.3); } return fx; }
   },
-  // ─ EEUU ─
   potencia_global:{
     n:'Potencia global', i:'🌐', col:'#4488ff',
     desc:'Las decisiones internacionales tienen el doble de impacto positivo.',
@@ -72,7 +65,6 @@ const TRAITS = {
     desc:'Cada decisión política divide más al electorado.',
     mod:(fx,evId)=>{ if(fx.t==='Política'||['escandalo','prensa','legislativo'].includes(evId)){ if(fx.popularidad>0) fx.popularidad=Math.round(fx.popularidad*0.7); if(fx.popularidad<0) fx.popularidad=Math.round(fx.popularidad*1.3); } return fx; }
   },
-  // ─ China ─
   control_estatal:{
     n:'Control estatal total', i:'🏛️', col:'#4488ff',
     desc:'La estabilidad mejora más con medidas de control. La corrupción es más fácil de ocultar.',
@@ -88,7 +80,6 @@ const TRAITS = {
     desc:'Los escándalos de corrupción impactan menos en popularidad, pero las relaciones internacionales sufren más.',
     mod:(fx,evId)=>{ if(['escandalo','prensa','datos','espionaje'].includes(evId)){ if(fx.popularidad<0) fx.popularidad=Math.round(fx.popularidad*0.5); if(fx.relaciones<0) fx.relaciones=Math.round(fx.relaciones*1.4); } return fx; }
   },
-  // ─ Rusia ─
   potencia_militar:{
     n:'Potencia militar', i:'⚔️', col:'#ff6644',
     desc:'Las respuestas militares cuestan menos estabilidad y convencen más.',
@@ -104,7 +95,6 @@ const TRAITS = {
     desc:'Los ingresos por recursos naturales amortiguan las crisis económicas.',
     mod:(fx,evId)=>{ if(fx.economia<0&&['sequia','cr_financiero','colapso'].includes(evId)) fx.economia=Math.round(fx.economia*0.65); return fx; }
   },
-  // ─ España ─
   democracia_consolidada:{
     n:'Democracia consolidada', i:'🗳️', col:'#00e5a0',
     desc:'La corrupción es más fácil de combatir y las instituciones resisten mejor.',
@@ -147,8 +137,6 @@ const LOGROS=[
   {id:'caos30',i:'🔴',n:'Superviviente del Caos',c:(e,p)=>e.dia>=30&&MODO_CAOS},
   {id:'caos100',i:'💀',n:'Leyenda del Caos',c:(e,p)=>e.dia>=100&&MODO_CAOS},
 ];
-// Abreviaciones en eventos: t=tipo,i=icono,p=peso,rp=requiere_pers,o=opciones
-// En opciones: tx=texto,fx=efectos,pr=personalidad,fd=efecto_diferido{en,im,ms},db=desbloquea,fl=flag
 const EV=[
 {id:'inflacion',t:'Economía',i:'📈',p:5,tx:'La inflación mensual superó el 12%. Las familias no pueden comprar alimentos básicos y hay desabastecimiento.',o:[
   {tx:'Controlar precios por decreto',fx:{economia:-4,popularidad:6,estabilidad:3},pr:'aut',fd:{en:4,im:{economia:-8,estabilidad:-5},ms:'El control de precios provocó escasez severa'}},
@@ -304,7 +292,6 @@ const EV=[
   {tx:'Patentar y licenciar a nivel global',fx:{economia:16,relaciones:12,popularidad:10},pr:'ref'},
   {tx:'Donar la patente como bien público',fx:{relaciones:20,popularidad:16,economia:-5},pr:'dip'},
   {tx:'Vender exclusividad a farmacéutica',fx:{economia:20,corrupcion:10,relaciones:-8},pr:'cor'}]},
-// ─── PERSONALIDAD ───
 {id:'aut_medios',t:'Política',i:'📡',p:3,rp:'aut',tx:'Tu equipo propone crear una agencia estatal que supervise el "contenido dañino" en medios y redes sociales.',o:[
   {tx:'Crear la agencia con plenos poderes',fx:{estabilidad:12,popularidad:-8,relaciones:-10,corrupcion:6},pr:'aut'},
   {tx:'Crear la agencia con límites legales',fx:{estabilidad:6,corrupcion:3,popularidad:-4},pr:'aut'},
@@ -351,7 +338,6 @@ const EV=[
 {id:'cor_fondos',t:'Política',i:'💰',p:2,rp:'cor',tx:'Tu tesorero puede "redirigir" fondos públicos de proyectos sociales a cuentas opacas antes de la auditoría.',o:[
   {tx:'Autorizar la operación',fx:{corrupcion:24,economia:10,popularidad:-8},pr:'cor',fd:{en:4,im:{corrupcion:10,relaciones:-15,popularidad:-16},ms:'La auditoría internacional destapó el desvío de fondos'},db:'sanciones'},
   {tx:'Rechazar y destituir al tesorero',fx:{corrupcion:-16,popularidad:10,estabilidad:5},pr:'ref'}]},
-// ─── EVENTOS EXCLUSIVOS MODO CAOS ────────────────────────────────────────
 {id:'motin',t:'Social',i:'⛓️',p:4,chaos:true,tx:'15 cárceles del país están en manos de los presos. Hay rehenes, muertos y los medios internacionales lo transmiten en vivo.',o:[
   {tx:'Asalto militar total sin negociación',fx:{estabilidad:18,popularidad:-22,relaciones:-18,corrupcion:10},pr:'aut',fd:{en:3,im:{popularidad:-14,relaciones:-12},ms:'Las imágenes del asalto generan condena internacional masiva'}},
   {tx:'Negociar con líderes presos: concesiones totales',fx:{popularidad:8,estabilidad:-18,corrupcion:14,relaciones:-8},fd:{en:4,im:{estabilidad:-10},ms:'Las concesiones generaron oleada de nuevos motines en cárceles menores'}},
@@ -383,9 +369,6 @@ const EV=[
 ];
 const IDX={};EV.forEach(e=>IDX[e.id]=e);
 
-/* ═══ TRAITS DEL PAÍS ═══ */
-
-// Aplica modificadores de traits al objeto fx antes de ejecutarlo
 function aplicarTraits(fx, evId){
   const p = PAISES[pid];
   if(!p||!p.tr) return fx;
@@ -397,7 +380,6 @@ function aplicarTraits(fx, evId){
   return fxMod;
 }
 
-// Construye el widget de traits en el sidebar
 function buildTraitsSidebar(){
   const w = $('traits-wrap');
   if(!w) return;
@@ -420,7 +402,6 @@ function buildTraitsSidebar(){
   });
 }
 
-// Añade chips de traits en las tarjetas de selección de país
 function buildTraitsEnPaises(){
   const g = $('gp'); if(!g) return;
   g.innerHTML = '';
@@ -447,16 +428,13 @@ function buildTraitsEnPaises(){
   });
 }
 
-// Muestra qué trait se activó en el evento actual (nota debajo de opciones)
 function mostrarTraitActivado(evId){
   document.querySelectorAll('.trait-ev-note').forEach(el=>el.remove());
   const p = PAISES[pid]; if(!p||!p.tr) return;
   const wrap = $('ops'); if(!wrap) return;
-  // Verificar si algún trait tiene lógica específica para este evento
   const activados = (p.tr||[]).filter(tId=>{
     const tr = TRAITS[tId];
     if(!tr) return false;
-    // Evaluar si el mod haría algo en un fx de prueba con valores no cero
     const test = {economia:-5,popularidad:5,estabilidad:-3,relaciones:3,corrupcion:2};
     const mod  = tr.mod({...test}, evId);
     return JSON.stringify(mod) !== JSON.stringify(test);
@@ -469,28 +447,23 @@ function mostrarTraitActivado(evId){
   wrap.after(note);
 }
 
-/* ═══ ESTADO ═══ */
 let G={},pid=null,activo=false,evActual='';
 let hist=[],qEfx=[],qEnc=[],flags=new Set(),logros=new Set(),pers={aut:0,dip:0,ref:0,cor:0};
 let _sv=null;
 let MODO_CAOS=false;
 
-/* ═══ HELPERS ═══ */
 const $=id=>document.getElementById(id);
 const tx=(id,t)=>{const e=$(id);if(e)e.textContent=t};
 const vis=id=>{const e=$(id);if(e)e.classList.add('vis')};
 const hid=id=>{const e=$(id);if(e)e.classList.remove('vis')};
 
-/* ═══ PAÍSES ═══ */
 function buildPaises(){ buildTraitsEnPaises(); }
 function ms(n,v,c){return`<div class="msr"><span class="msl">${n}</span><div class="msb"><div class="msf" style="width:${v}%;background:${c}"></div></div><span class="msv">${v}</span></div>`}
 
-/* ═══ NAVEGACIÓN ═══ */
 function mostrarSel(){$('mp').style.display='none';const s=$('selp');s.classList.add('vis');s.scrollIntoView({behavior:'smooth',block:'start'})}
 function ocultarSel(){$('selp').classList.remove('vis');$('mp').style.display=''}
 function mostrarInicio(){const pi=$('si');pi.style.display='';pi.style.opacity='0';pi.style.transition='opacity .35s ease';requestAnimationFrame(()=>requestAnimationFrame(()=>pi.style.opacity='1'));setTimeout(()=>pi.style.transition='',380);aplicarVisCaos()}
 
-/* ═══ MODO CAOS ═══ */
 function toggleCaos(){
   MODO_CAOS=!MODO_CAOS;
   aplicarVisCaos();
@@ -506,7 +479,6 @@ function aplicarVisCaos(){
   if(ind)ind.style.display=MODO_CAOS?'flex':'none';
 }
 
-/* ═══ INICIAR ═══ */
 function iniciarJuego(id){
   const p=PAISES[id];if(!p)return;
   pid=id;G={...p.s,dia:1};logros=new Set();hist=[];qEfx=[];qEnc=[];flags=new Set();
@@ -518,7 +490,6 @@ function iniciarJuego(id){
   sigEv();addLog(`Iniciaste tu mandato en ${p.n}${MODO_CAOS?' [MODO CAOS]':''}`,'pos');
 }
 
-/* ═══ STATS ═══ */
 const SD=[{k:'popularidad',n:'Popularidad',c:'spop'},{k:'economia',n:'Economía',c:'seco'},{k:'estabilidad',n:'Estabilidad',c:'sest'},{k:'relaciones',n:'Relac. Intl.',c:'srel'},{k:'corrupcion',n:'Corrupción',c:'scor'}];
 function buildStats(){
   const w=$('stw');w.innerHTML='';
@@ -551,7 +522,6 @@ function actualizarCola(){
   else b.classList.remove('vis');
 }
 
-/* ═══ PERSONALIDAD ═══ */
 function dom(){const e=Object.entries(pers).sort((a,b)=>b[1]-a[1]);return e[0][1]===0?'neu':e[0][0]}
 function renderPers(){
   const d=dom(),w=$('pw');if(!w)return;
@@ -567,7 +537,6 @@ function renderPers(){
 }
 function regPers(op){if(!op.pr)return;const t=Array.isArray(op.pr)?op.pr:[op.pr];t.forEach(k=>{if(pers[k]!==undefined)pers[k]++});renderPers()}
 
-/* ═══ LOGROS ═══ */
 function renderCaosInd(){
   const w=$('caos-ind');if(!w)return;
   w.style.display=MODO_CAOS?'flex':'none';
@@ -585,14 +554,12 @@ function checkLogros(){
   });
 }
 
-/* ═══ LOG ═══ */
 function addLog(t,c=''){
   const log=$('logev'),d=document.createElement('div');
   d.className=`ll ${c}`;d.textContent=`◆ ${t}`;log.prepend(d);
   while(log.children.length>6)log.removeChild(log.lastChild);
 }
 
-/* ═══ EFECTOS ═══ */
 function aplicarEfx(imp, mult=1, evId=''){
   const fxMod = aplicarTraits({...imp}, evId);
   const ap={};
@@ -609,7 +576,6 @@ function procesarEfxDif(){
 }
 function desbloquearEv(id){if(IDX[id]&&!qEnc.includes(id)){qEnc.push(id);actualizarCola()}}
 
-/* ═══ SELECCIÓN EVENTO ═══ */
 function elegirEv(){
   const d=G.dia,dm=dom();
   if(qEnc.length>0){const id=qEnc.shift();actualizarCola();if(IDX[id])return IDX[id]}
@@ -626,7 +592,6 @@ function elegirEv(){
   return bolsa[Math.floor(Math.random()*bolsa.length)];
 }
 
-/* ═══ RENDERIZAR EVENTO ═══ */
 function sigEv(){
   if(!activo)return;
   const dif=procesarEfxDif();
@@ -677,7 +642,6 @@ function arrs(fx){
   }).join('');
 }
 
-/* ═══ DECISIÓN ═══ */
 function elegir(op){
   if(!activo)return;
   document.querySelectorAll('.bo').forEach(b=>b.classList.add('dis'));
@@ -692,8 +656,8 @@ function elegir(op){
 function avanzar(){
   G.dia++;tx('dn',G.dia);guardar();checkLogros();
   if(checkGO())return;
+  if(typeof verificarCheckpointHistoria==='function' && verificarCheckpointHistoria(G.dia))return;
   if(G.dia%5===0)buildTicker();
-  // Elecciones cada ELEC_CADA días
   if(G.dia % ELEC_CADA === 0){
     addLog(`⚡ ¡Día ${G.dia}! Se convocan elecciones presidenciales`, 'war');
     notif('ndi','🗳️','Elecciones presidenciales',`Día ${G.dia} — elige tu estrategia`);
@@ -703,7 +667,6 @@ function avanzar(){
   setTimeout(sigEv,370);
 }
 
-/* ═══ GAME OVER ═══ */
 const GOTIT={popularidad:'Has sido derrocado por el pueblo',economia:'Colapso económico total',estabilidad:'El Estado se desintegró',relaciones:'Aislamiento internacional total',corrupcion:'Corrupción fuera de control'};
 const GOICO={popularidad:'✊',economia:'📉',estabilidad:'💥',relaciones:'🌐',corrupcion:'🔓'};
 const GOCAUSA={
@@ -736,7 +699,6 @@ function checkGO(){
 function reintentar(){hid('sgo');if(pid&&PAISES[pid])iniciarJuego(pid);else irInicio()}
 function irInicio(){hid('sgo');hid('sg');ocultarSel();buildPaises();mostrarInicio()}
 
-/* ═══ MODAL REINICIO ═══ */
 function abrirMR(){vis('mr')}
 function cerrarMR(){hid('mr')}
 function ejecutarReinicio(){
@@ -746,7 +708,6 @@ function ejecutarReinicio(){
 }
 $('mr').addEventListener('click',function(e){if(e.target===this)cerrarMR()});
 
-/* ═══ GUARDAR ═══ */
 function guardar(){
   if(!pid||!activo)return;
   try{
@@ -760,7 +721,6 @@ function guardar(){
   }catch(e){console.warn(e)}
 }
 
-/* ═══ SAVE DETECTION ═══ */
 function detectarSave(){
   const raw=localStorage.getItem('mandato_save');if(!raw){mostrarInicio();return}
   try{
@@ -817,7 +777,6 @@ function descartarYNueva(){
   setTimeout(()=>{hid('scl');sl.style.opacity='';sl.style.transition='';mostrarInicio()},300);
 }
 
-/* ═══ NOTIFS ═══ */
 function notif(tipo,ico,tag,nom){
   const st=$('ns'),d=document.createElement('div');
   d.className=`nt ${tipo}`;d.innerHTML=`<div class="ntic">${ico}</div><div><div class="nttg">${tag}</div><div class="ntnm">${nom}</div></div>`;
@@ -825,15 +784,13 @@ function notif(tipo,ico,tag,nom){
   setTimeout(()=>{d.classList.add('out');setTimeout(()=>{if(d.parentNode)d.parentNode.removeChild(d)},420)},4000);
 }
 
-/* ═══ CRISIS ESPECIALES ═══ */
-// Probabilidad base por día (solo desde día 15, solo si no hubo crisis reciente)
-const CRISIS_PROB_BASE  = 0.022;   // ~2.2% por decisión
-const CRISIS_COOLDOWN   = 20;      // mínimo X días entre crisis
+const CRISIS_PROB_BASE  = 0.022;
+const CRISIS_COOLDOWN   = 20;
 let   ultimaCrisisDia   = -99;
 let   crisisUsadas      = new Set();
 
 const CRISIS = [
-  /* ── PANDEMIA ── */
+
   {
     id:'cr_pandemia', nombre:'PANDEMIA GLOBAL',
     ico:'🦠', color:'#bb44ff',
@@ -857,7 +814,7 @@ const CRISIS = [
       },
     ],
   },
-  /* ── GUERRA REGIONAL ── */
+
   {
     id:'cr_guerra', nombre:'GUERRA EN LA REGIÓN',
     ico:'💣', color:'#ff6644',
@@ -880,7 +837,7 @@ const CRISIS = [
       },
     ],
   },
-  /* ── COLAPSO FINANCIERO ── */
+
   {
     id:'cr_financiero', nombre:'COLAPSO FINANCIERO',
     ico:'📉', color:'#ffaa00',
@@ -904,7 +861,7 @@ const CRISIS = [
       },
     ],
   },
-  /* ── TERREMOTO DEVASTADOR ── */
+
   {
     id:'cr_terremoto', nombre:'TERREMOTO CATASTRÓFICO',
     ico:'🌋', color:'#ff9900',
@@ -928,7 +885,7 @@ const CRISIS = [
       },
     ],
   },
-  /* ── GOLPE DE ESTADO ── */
+
   {
     id:'cr_golpe', nombre:'INTENTO DE GOLPE',
     ico:'⚔️', color:'#ff3355',
@@ -952,7 +909,7 @@ const CRISIS = [
       },
     ],
   },
-  /* ── CRISIS ENERGÉTICA ── */
+
   {
     id:'cr_energia', nombre:'APAGÓN NACIONAL',
     ico:'⚡', color:'#ffd700',
@@ -976,7 +933,7 @@ const CRISIS = [
       },
     ],
   },
-  /* ── ESCÁNDALO NUCLEAR ── */
+
   {
     id:'cr_nuclear', nombre:'AMENAZA NUCLEAR',
     ico:'☢️', color:'#44ff88',
@@ -1000,7 +957,7 @@ const CRISIS = [
       },
     ],
   },
-  /* ══ CRISIS EXCLUSIVAS MODO CAOS ══ */
+
   {
     id:'cr_revolucion', nombre:'REVOLUCIÓN POPULAR',
     ico:'🔥', color:'#ff2200',
@@ -1073,39 +1030,31 @@ function dispararCrisis() {
   crisisUsadas.add(crisis.id);
   ultimaCrisisDia = G.dia;
 
-  // Flash de pantalla
   const fl = $('crisis-flash');
   fl.classList.remove('go'); void fl.offsetWidth; fl.classList.add('go');
 
-  // Notificación dramática
   notif('ncr', crisis.ico, '🚨 CRISIS ESPECIAL', crisis.nombre);
   addLog(`🚨 CRISIS: ${crisis.nombre}`, 'neg');
-  buildTicker();  // regenerar ticker con contexto de crisis
+  buildTicker();
 
-  // Renderizar en la tarjeta de evento como crisis
   renderCrisis(crisis);
 }
 
 function renderCrisis(crisis) {
   const card = $('ce');
-  // Quitar clases previas, añadir crisis
   card.className = 'crisis';
   card.style.animation = 'none'; void card.offsetWidth; card.style.animation = '';
 
-  // Limpiar badge de personalidad y asesor
   const ob = card.querySelector('.epb'); if (ob) ob.remove();
   const aw = $('asesor-wrap'); if (aw) aw.innerHTML = '';
 
-  // Tipo row
   $('ed').className = 'ed';
   $('ed').style.background = crisis.color;
   $('ed').style.boxShadow = `0 0 6px ${crisis.color}`;
   tx('et', '🚨 CRISIS ESPECIAL');
 
-  // Ícono
   tx('eic', crisis.ico);
 
-  // Banner de crisis
   const bannerHTML = `
     <div class="crisis-banner">
       <div class="crisis-banner-ico">${crisis.ico}</div>
@@ -1118,20 +1067,17 @@ function renderCrisis(crisis) {
     <div class="crisis-impacto">${crisis.impactoInmediato}</div>`;
 
   tx('etx', crisis.tx);
-  // Insertar banner antes del texto
   const etxEl = $('etx');
   etxEl.insertAdjacentHTML('beforebegin', bannerHTML);
 
-  // Opciones
   const ow = $('ops'); ow.innerHTML = '';
   crisis.o.forEach(op => {
     const btn = document.createElement('button');
     btn.className = 'bo';
     btn.innerHTML = `<div class="ot">${op.tx}</div><div class="oa">${arrs(op.fx)}</div>`;
     btn.onclick = () => {
-      // Limpiar banners de crisis antes de procesar
       document.querySelectorAll('.crisis-banner,.crisis-impacto').forEach(el => el.remove());
-      card.className = '';  // reset clase crisis
+      card.className = '';
       $('ed').style.background = '';
       $('ed').style.boxShadow = '';
       elegir(op);
@@ -1140,23 +1086,16 @@ function renderCrisis(crisis) {
   });
 }
 
-/* ═══ SISTEMA DE ELECCIONES ═══ */
-// Elecciones cada 30 días (día 30, 60, 90…)
 const ELEC_CADA = 30;
-let elecPendiente = false;   // bloquea sigEv mientras hay elección activa
+let elecPendiente = false;
 
-// Calcula % voto base antes de elegir estrategia de campaña
 function calcVotoBase() {
-  // Popularidad pesa 40%, economía 30%, estabilidad 20%, relaciones 10%
-  // Corrupción penaliza
   const raw = (G.popularidad * .4) + (G.economia * .3) + (G.estabilidad * .2) + (G.relaciones * .1);
-  const penalty = (G.corrupcion / 100) * 12;   // hasta -12 pts por corrupción alta
-  // Cada vez que pasamos una elección, la base baja ligeramente (fatiga)
+  const penalty = (G.corrupcion / 100) * 12;
   const fatiga  = Math.floor(G.dia / ELEC_CADA - 1) * 2;
   return Math.max(18, Math.min(74, Math.round(raw - penalty - fatiga)));
 }
 
-// Opciones de campaña electoral
 const ELEC_CAMPAÑAS = [
   {
     id:'limpia',
@@ -1164,9 +1103,8 @@ const ELEC_CAMPAÑAS = [
     desc:'Debates honestos, propuestas concretas y cero manipulación. Tu imagen queda intacta sin importar el resultado.',
     tags:[{t:'Corrupción −8',c:'pos'},{t:'Popularidad ±variado',c:'war'},{t:'Sin riesgos',c:'pos'}],
     aplicar(base) {
-      // Bono pequeño de popularidad por percepción de honestidad
       aplicarEfx({corrupcion:-8, popularidad:+5}, 1);
-      return base + 4;   // leve ventaja real
+      return base + 4;
     },
   },
   {
@@ -1186,19 +1124,17 @@ const ELEC_CAMPAÑAS = [
     tags:[{t:'Corrupción +20',c:'neg'},{t:'Relaciones −10',c:'neg'},{t:'Voto +16%',c:'pos'},{t:'Riesgo escándalo',c:'war'}],
     aplicar(base) {
       aplicarEfx({corrupcion:+20, relaciones:-10}, 1);
-      // 30% de probabilidad de escándalo que penaliza popularidad gravemente
       if (Math.random() < .30) {
         aplicarEfx({popularidad:-22, estabilidad:-10}, 1);
         addLog('¡El fraude fue denunciado por observadores internacionales!','neg');
         notif('ncr','🔴','Escándalo electoral','El fraude fue expuesto públicamente');
-        return base + 6;   // escándalo reduce ventaja
+        return base + 6;
       }
       return base + 16;
     },
   },
 ];
 
-// Factores contextuales que se muestran al jugador
 function calcFactores(base) {
   const fs = [];
   if (G.popularidad >= 65) fs.push({t:'Alta popularidad',c:'pos'});
@@ -1218,7 +1154,7 @@ function calcFactores(base) {
 
 function abrirEleccion() {
   elecPendiente = true;
-  activo = false;   // pausa el juego mientras dura la elección
+  activo = false;
 
   const base = calcVotoBase();
   const factores = calcFactores(base);
@@ -1232,7 +1168,6 @@ function abrirEleccion() {
   const body = $('ec-body');
   body.innerHTML = '';
 
-  // ── Bloque de pronóstico ──
   const youW = Math.max(5, Math.min(90, base));
   const opW  = 100 - youW;
 
@@ -1256,14 +1191,12 @@ function abrirEleccion() {
     </div>`;
   body.appendChild(forecast);
 
-  // ── Factores ──
   if (factores.length > 0) {
     const fwrap = document.createElement('div');
     fwrap.innerHTML = `<div class="ec-factors">${factores.map(f=>`<span class="ec-fac ${f.c}">${f.t}</span>`).join('')}</div>`;
     body.appendChild(fwrap);
   }
 
-  // ── Opciones de campaña ──
   const lblDiv = document.createElement('div');
   lblDiv.className = 'ec-opts-lbl';
   lblDiv.textContent = 'Estrategia de campaña';
@@ -1287,7 +1220,6 @@ function abrirEleccion() {
 }
 
 function resolverEleccion(camp, baseOriginal) {
-  // Aplicar efectos de la campaña y obtener voto final
   const votoFinal = Math.max(15, Math.min(92, camp.aplicar(baseOriginal)));
   const oponenteFinal = 100 - votoFinal;
   const victoria = votoFinal > 50;
@@ -1317,7 +1249,6 @@ function resolverEleccion(camp, baseOriginal) {
     notif('ncr','💔','Derrota electoral',`${votoFinal}% — fin del mandato`);
   }
 
-  // Construir pantalla de resultado
   const resDiv = document.createElement('div');
   resDiv.className = 'ec-result';
   resDiv.innerHTML = `
@@ -1331,9 +1262,7 @@ function resolverEleccion(camp, baseOriginal) {
     <button class="btn-ec-ok" onclick="cerrarEleccion(${victoria})">${victoria ? 'Continuar gobernando' : 'Aceptar el resultado'}</button>`;
   body.appendChild(resDiv);
 
-  // Si perdió: game over tras cerrar
   if (!victoria) {
-    // Marcamos la derrota electoral como causa especial
     window._elecDerrota = true;
   }
 }
@@ -1345,7 +1274,6 @@ function cerrarEleccion(victoria) {
 
   if (window._elecDerrota) {
     window._elecDerrota = false;
-    // Simular game over por popularidad (derrota electoral)
     G.popularidad = 0;
     checkGO();
     return;
@@ -1353,7 +1281,6 @@ function cerrarEleccion(victoria) {
   setTimeout(sigEv, 400);
 }
 
-/* ═══ SISTEMA DE ASESORES ═══ */
 const ASESORES = {
   eco:{
     nom:'Min. de Economía', ico:'📊', cls:'aeco', cargo:'Ministerio de Economía',
@@ -1425,7 +1352,6 @@ const ASESORES = {
   },
 };
 
-// Qué asesor aplica por tipo de evento
 const ASESOR_TIPO = {
   'Economía':'eco', 'Social':'pol', 'Política':'pol',
   'Internacional':'dip', 'Inesperado':'pol',
@@ -1433,7 +1359,6 @@ const ASESOR_TIPO = {
 const IDS_MIL = new Set(['rebelion','conflicto','aut_excepcion','pandemia','protestas','prot_fmi','prot_min','huelga','ddhh','policia']);
 
 function mejorOpIdx(ev, tipo) {
-  // Calcula la opción "óptima" según el enfoque del asesor
   let best = 0, bestScore = -Infinity;
   ev.o.forEach((op, i) => {
     const fx = op.fx;
@@ -1448,7 +1373,6 @@ function mejorOpIdx(ev, tipo) {
 }
 
 function peorOpIdx(ev) {
-  // Asesor con agenda oculta recomienda la peor opción neta para el jugador
   let worst = 0, worstScore = Infinity;
   ev.o.forEach((op, i) => {
     const fx = op.fx;
@@ -1465,27 +1389,20 @@ function mostrarAsesor(ev) {
   if (!wrap) return;
   wrap.innerHTML = '';
 
-  // 18% de probabilidad de no aparecer ningún asesor (silencio dramático)
   if (Math.random() < 0.18) return;
-  // No mostrar asesor en eventos diferidos
   if (!ev.o) return;
 
-  // Determinar tipo
   let tipo = IDS_MIL.has(ev.id) ? 'mil' : (ASESOR_TIPO[ev.t] || 'pol');
   const asesor = ASESORES[tipo];
 
-  // ¿Tiene agenda oculta? 22% de probabilidad
   const oculta = Math.random() < 0.22;
 
-  // Índice de opción recomendada
   const idxRec = oculta ? peorOpIdx(ev) : mejorOpIdx(ev, tipo);
   const opTx = ev.o[idxRec]?.tx || '';
 
-  // Frase
   const pool = oculta ? asesor.malas : asesor.buenas;
   const frase = pool[Math.floor(Math.random() * pool.length)];
 
-  // Construir card
   const card = document.createElement('div');
   card.className = `acard ${asesor.cls}`;
   card.innerHTML = `
@@ -1503,45 +1420,35 @@ function mostrarAsesor(ev) {
     </div>`;
   wrap.appendChild(card);
 
-  // Resaltar opción recomendada sutilmente (después del render de botones)
   setTimeout(() => {
     const bots = document.querySelectorAll('.bo');
     if (bots[idxRec]) bots[idxRec].classList.add('recom');
   }, 340);
 }
 
-/* ═══ TICKER DE NOTICIAS ═══ */
-// Titulares dinámicos basados en el estado actual del juego
 const NOTICIAS_BASE = [
-  // Economía crítica
   {cond:e=>e.economia<=20,  txt:'Economía al borde del colapso: expertos piden intervención urgente',    tono:'neg'},
   {cond:e=>e.economia<=35,  txt:'Inflación record paraliza el consumo interno en todo el país',           tono:'neg'},
   {cond:e=>e.economia<=50,  txt:'Inversores extranjeros advierten riesgo elevado en el mercado local',    tono:'war'},
   {cond:e=>e.economia>=75,  txt:'PIB crece por tercer trimestre consecutivo según datos oficiales',       tono:'pos'},
   {cond:e=>e.economia>=90,  txt:'Agencias internacionales elevan calificación crediticia del país',       tono:'pos'},
-  // Popularidad crítica
   {cond:e=>e.popularidad<=20, txt:'Encuestas: aprobación presidencial cae a mínimo histórico del 12%',   tono:'neg'},
   {cond:e=>e.popularidad<=35, txt:'Protestas frente al palacio de gobierno superan las 50.000 personas', tono:'neg'},
   {cond:e=>e.popularidad<=50, txt:'Sondeos muestran descontento creciente con la gestión actual',        tono:'war'},
   {cond:e=>e.popularidad>=80, txt:'Presidente alcanza 78% de aprobación, el más alto en cinco años',     tono:'pos'},
   {cond:e=>e.popularidad>=90, txt:'Ciudadanos celebran en las calles el primer aniversario del mandato', tono:'pos'},
-  // Estabilidad
   {cond:e=>e.estabilidad<=20, txt:'Estado de emergencia no descartado ante creciente inestabilidad',     tono:'neg'},
   {cond:e=>e.estabilidad<=40, txt:'Fuentes militares confirman tensión interna en varias regiones',      tono:'neg'},
   {cond:e=>e.estabilidad>=80, txt:'Informe ONU destaca estabilidad institucional como modelo regional',  tono:'pos'},
-  // Relaciones internacionales
   {cond:e=>e.relaciones<=20, txt:'Embajadores de cuatro países retiran misiones diplomáticas',           tono:'neg'},
   {cond:e=>e.relaciones<=40, txt:'Tensión diplomática con socios comerciales amenaza exportaciones',     tono:'war'},
   {cond:e=>e.relaciones>=80, txt:'Firma de acuerdo multilateral refuerza posición en el escenario global', tono:'pos'},
-  // Corrupción
   {cond:e=>e.corrupcion>=80, txt:'Transparencia Internacional rebaja índice de integridad a nivel crítico', tono:'neg'},
   {cond:e=>e.corrupcion>=60, txt:'Fiscalía recibe 340 denuncias por irregularidades en contratos públicos', tono:'war'},
   {cond:e=>e.corrupcion<=15, txt:'País asciende 30 puestos en ranking mundial de anticorrupción',         tono:'pos'},
-  // Días de mandato
   {cond:e=>e.dia>=100, txt:'El mandato cumple 100 días: análisis de los primeros resultados de gobierno', tono:'neu'},
   {cond:e=>e.dia>=50,  txt:'A mitad del primer año: el balance de aciertos y errores del gobierno',       tono:'neu'},
   {cond:e=>e.dia>=30,  txt:'Primer mes en el poder: el gobierno define sus prioridades de gestión',       tono:'neu'},
-  // Siempre visibles (genéricas)
   {cond:()=>true, txt:'Mercados atentos a las próximas decisiones del ejecutivo nacional',                tono:'neu'},
   {cond:()=>true, txt:'Oposición parlamentaria exige mayor transparencia en el gasto público',            tono:'neu'},
   {cond:()=>true, txt:'Analistas debaten el rumbo económico del país en foro internacional',              tono:'neu'},
@@ -1558,26 +1465,20 @@ function buildTicker(){
   const track = $('ticker-track');
   if(!track || !activo) return;
 
-  // Filtrar titulares que aplican al estado actual
   const activas = NOTICIAS_BASE.filter(n => n.cond(G));
-  // Tomar máximo 14, mezclar un poco
   const selec = activas.sort(()=>Math.random()-.5).slice(0,14);
 
-  // Duplicar para scroll infinito sin saltos
   const all = [...selec, ...selec];
   track.innerHTML = all.map(n =>
     `<span class="tn tn${n.tono}"><span class="tn-dot"></span>${n.txt}</span>`
   ).join('');
 
-  // Ajustar duración según cantidad de noticias (aprox 8s por titular)
   const dur = selec.length * 5;
   track.style.animation = 'none';
   void track.offsetWidth;
   track.style.animation = `tickerScroll ${dur}s linear infinite`;
 }
 
-/* ═══ INIT ═══ */
 $('si').style.display='none';
 buildPaises();
 detectarSave();
-

@@ -4,9 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MANDATO — Simulador Presidencial</title>
-<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=Space+Mono&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=Space+Mono&display=swap" rel="stylesheet"></noscript>
 <link rel="stylesheet" href="estilo.css">
 
+<meta name="theme-color" content="#030507">
 </head>
 <body>
 
@@ -33,6 +37,7 @@
         <button class="bm bpri" onclick="mostrarSel()">✦ Nueva Partida</button>
         <button class="bm bsec" id="bcont" onclick="ejecutarCarga()" disabled>▶ Continuar Partida</button>
         <button class="bm bgho bcaos" id="btn-caos" onclick="toggleCaos()">💀 Modo Caos</button>
+        <button class="bm bgho bhist" onclick="abrirHistoria()">📖 Modo Historia</button>
         <a class="bm bgho bmail" href="mailto:fgmclgames@gmail.com?subject=Sugerencia%20para%20MANDATO">✉ Enviar Sugerencia</a>
         <div id="msp"><div class="mspf" id="mspf">🌍</div><div class="mspi"><div class="mspn" id="mspn">—</div><div class="mspd">Día <span id="mspd">—</span></div></div></div>
       </div>
@@ -155,12 +160,18 @@
   </div>
 </div>
 
+<!-- MODO HISTORIA -->
+<div id="sh" style="display:none">
+  <div id="sh-content" class="sh-content"></div>
+</div>
+
 <!-- CRISIS FLASH -->
 <div id="crisis-flash"></div>
 
 <!-- NOTIFS -->
 <div id="ns"></div>
 
-<script src="scripts.js"></script>
+<script src="historia.js" defer></script>
+<script src="scripts.js" defer></script>
 </body>
 </html>
